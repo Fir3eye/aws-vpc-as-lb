@@ -27,7 +27,7 @@ This project provides a simple HTML testing page with vibrant colors and styled 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/html-testing-page.git
+    git clone https://github.com/Fir3eye/html-testing-page.git
     ```
 
 2. Open the `index.html` file in your preferred web browser.
