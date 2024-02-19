@@ -1,42 +1,77 @@
-# HTML Testing Page
-## Output
+# 🥏AWS Project: Applications in Private Subnet Showcase
+## ⛳Output
 ![image](https://github.com/Fir3eye/aws-vpc-as-lb/assets/93431222/541a5080-d1ce-4f33-8972-3efddd09b06a)
 
-# Colorful HTML Testing Page
 
-This project provides a simple HTML testing page with vibrant colors and styled elements. The page includes a colorful welcome block, a black background for the server status, and a box with relevant information.
 
-## Table of Contents
+This AWS project demonstrates the setup of applications running in a private subnet using various AWS services. The infrastructure includes a Virtual Private Cloud (VPC), Launch Template, Autoscaling Group, Bastion Host, and Load Balancer.
 
-- [Features](#features)
-- [Usage](#usage)
-- [Customization](#customization)
-- [Contributing](#contributing)
-- [License](#license)
+## 🎢Steps of Creation
 
-## Features
+### 1. Create VPC
 
-1. **Welcome Block:** The page starts with a welcoming block displaying "Welcome Back to SenDevOps" in vibrant colors.
+- Open the AWS Management Console.
+- Navigate to the VPC service.
+- Create a new VPC with private and public subnets.
 
-2. **Server Status Box:** The main content of the page is a box indicating the status of "Server-1 is running," with a bold and contrasting design.
+### 2. Launch Template
 
-3. **Colorful Background:** The entire page has a colorful gradient background for an appealing visual experience.
+- Create an EC2 Launch Template specifying the instance type, AMI, and other configurations.
+  
+### 3. Autoscaling Group
 
-## Usage
+- Set up an Autoscaling Group using the Launch Template.
+- Define scaling policies based on conditions like CPU utilization or network traffic.
 
-1. Clone the repository:
+### 4. Bastion Host
 
-    ```bash
-    git clone https://github.com/Fir3eye/html-testing-page.git
-    ```
+- Launch a public EC2 instance as a Bastion Host in the public subnet.
+- Configure security groups to allow SSH access only from your IP address.
 
-2. Open the `index.html` file in your preferred web browser.
+### 5. Copy Public Key to Bastion Host
 
-## Customization
+- Copy your public key to the Bastion Host to enable secure access.
+  
+### 6. SCP Key to Private EC2 Instance
 
-Feel free to customize the HTML and CSS in the `index.html` file to meet your specific requirements. You can adjust colors, text, and styles according to your preferences.
+- Use SCP to copy the private key from your local machine to the private EC2 instance in the private subnet.
+  
+```bash
+scp -i /path/key.pem /path/key.pem ubuntu@privateIP:/home/ubuntu
 
-```html
-<!-- Add your custom HTML and styles here -->
 
-as=Autoscaling, lb=LoadBalancer, 
+```
+
+### 7. Run Demo App using Python3
+
+- Connect to the private EC2 instance via the Bastion Host:
+
+```bash
+ssh -i /path/key.pem -o "ProxyJump ubuntu@bastionIP" ubuntu@privateIP
+```
+
+
+### 8. Target Group
+
+- Create a Target Group for your private EC2 instances:
+
+  - Navigate to "Target Groups" in the AWS EC2 service.
+  - Create a new Target Group with health check settings.
+  - Register your private EC2 instances in the Target Group.
+
+### 9. Load Balancer
+
+- Set up an Application Load Balancer (ALB):
+
+  - Navigate to "Load Balancers" in the AWS EC2 service.
+  - Create a new Application Load Balancer (ALB) with listeners and security settings.
+  - Associate the ALB with the Target Group created in step 8.
+
+- Test the load balancer:
+
+  - Access your application through the ALB DNS. Traffic will be distributed among registered instances.
+
+
+Feel free to customize and extend this project based on your specific application requirements.
+
+
